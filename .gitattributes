@@ -1,0 +1,2 @@
+*.imploded filter=lfs diff=lfs merge=lfs -text
+*.decomp filter=lfs diff=lfs merge=lfs -text

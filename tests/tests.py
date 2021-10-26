@@ -6,7 +6,7 @@ import unittest
 from collections import OrderedDict
 from pathlib import Path
 
-from fileTestSuite.unittest import FileTestSuiteTestCaseMixin
+from fileTestSuite.unittest import GeneratedTestProgram, FTSTestClass
 
 dict = OrderedDict
 
@@ -17,11 +17,7 @@ sys.path.insert(0, str(repoRootDir))
 
 from pkblast import decompress, decompressBytesChunkedToBytes, decompressBytesWholeToBytes, decompressStreamToBytes
 
-class Tests(unittest.TestCase, FileTestSuiteTestCaseMixin):
-	@property
-	def fileTestSuiteDir(self) -> Path:
-		return thisDir / "testDataset"
-
+class PkBlastTestClass(FTSTestClass):
 	def _testProcessorImpl(self, challFile: Path, respFile: Path, paramsDict=None) -> None:
 		self._testChallengeResponsePair(respFile.read_bytes(), challFile.read_bytes())
 
@@ -32,6 +28,10 @@ class Tests(unittest.TestCase, FileTestSuiteTestCaseMixin):
 		#	mm.write(chall)
 		#	mm.seek(0)
 		#	self._testPack(mm, resp)
+
+	@classmethod
+	def getFileTestSuiteDir(cls) -> Path:
+		return thisDir / "testDataset"
 
 	def _testPack(self, chall: bytes, resp: bytes):
 		tpName = chall.__class__.__name__
@@ -44,4 +44,4 @@ class Tests(unittest.TestCase, FileTestSuiteTestCaseMixin):
 
 
 if __name__ == "__main__":
-	unittest.main()
+	GeneratedTestProgram(PkBlastTestClass)
